@@ -1,0 +1,226 @@
+import { useEffect, useState, useRef } from 'react';
+import './App.css';
+
+const WEATHER_API_KEY = '8b6da581100d8da99007e32097e1604a'; // Replace with your actual API key
+
+function App() {
+  const [bannerType, setBannerType] = useState<'default' | 'rain' | 'night'>('default');
+  const videoRef = useRef<HTMLVideoElement>(null);
+
+  useEffect(() => {
+    // Check for night based on system time
+    const hour = new Date().getHours();
+    if (hour >= 21 || hour < 7) {
+      setBannerType('night');
+      return;
+    }
+    // Try geolocation for weather
+    if (navigator.geolocation) {
+      navigator.geolocation.getCurrentPosition(
+        async (position) => {
+          const lat = position.coords.latitude;
+          const lon = position.coords.longitude;
+          try {
+            const res = await fetch(
+              `https://api.openweathermap.org/data/2.5/weather?lat=${lat}&lon=${lon}&appid=${WEATHER_API_KEY}`
+            );
+            const data = await res.json();
+            if (
+              data.weather &&
+              data.weather.some((w: any) => w.main.toLowerCase().includes('rain'))
+            ) {
+              setBannerType('rain');
+            }
+          } catch (e) {
+            setBannerType('default');
+          }
+        },
+        () => {
+          setBannerType('default');
+        }
+      );
+    } else {
+      setBannerType('default');
+    }
+  }, []);
+
+  useEffect(() => {
+    const video = videoRef.current;
+    if (!video) {
+      console.log('Video ref not available');
+      return;
+    }
+
+    // Force load the video
+    video.load();
+    console.log('Video load() called');
+
+    const handleScroll = () => {
+      if (!video.duration || isNaN(video.duration)) {
+        console.log('Video duration not ready:', video.duration);
+        return;
+      }
+      // Map scroll position to video time
+      const scrollTop = window.scrollY;
+      const maxScroll = document.documentElement.scrollHeight - window.innerHeight;
+      if (maxScroll <= 0) {
+        console.log('maxScroll is 0 or negative:', maxScroll);
+        return;
+      }
+      const scrollFraction = Math.min(Math.max(scrollTop / maxScroll, 0), 1);
+      video.currentTime = scrollFraction * video.duration;
+      console.log('Scroll:', scrollTop, 'Fraction:', scrollFraction, 'Video time:', video.currentTime);
+    };
+
+    // Wait for video metadata to load before enabling scroll handler
+    const onLoadedMetadata = () => {
+      console.log('Video metadata loaded, duration:', video.duration);
+      video.pause(); // Pause the video so scroll controls it
+      handleScroll();
+    };
+
+    // Also listen for canplaythrough for better frame availability
+    const onCanPlay = () => {
+      console.log('Video can play through');
+      handleScroll();
+    };
+
+    video.addEventListener('loadedmetadata', onLoadedMetadata);
+    video.addEventListener('canplaythrough', onCanPlay);
+    window.addEventListener('scroll', handleScroll);
+
+    // If already loaded
+    if (video.readyState >= 1) {
+      console.log('Video already loaded, readyState:', video.readyState);
+      onLoadedMetadata();
+    }
+
+    return () => {
+      video.removeEventListener('loadedmetadata', onLoadedMetadata);
+      video.removeEventListener('canplaythrough', onCanPlay);
+      window.removeEventListener('scroll', handleScroll);
+    };
+  }, [bannerType]);
+
+  useEffect(() => {
+    const handleGradientScroll = () => {
+      const scrollTop = window.scrollY;
+      const maxScroll = document.documentElement.scrollHeight - window.innerHeight;
+      const scrollFraction = maxScroll > 0 ? (scrollTop / maxScroll) : 0;
+      // Super aggressive gradient movement
+      const gradientPos = scrollFraction * 1000; // 10x multiplier for very aggressive movement
+      document.documentElement.style.setProperty('--gradient-pos', `${gradientPos}%`);
+    };
+
+    window.addEventListener('scroll', handleGradientScroll);
+    handleGradientScroll(); // Initialize
+
+    return () => window.removeEventListener('scroll', handleGradientScroll);
+  }, []);
+
+  return (
+    <div className="main-landing">
+      <header className="header">
+        <div className="container">
+          <h1 className="logo">Kent Harmon</h1>
+          <nav className="nav">
+            <a href="#about">About</a>
+            <a href="#projects">Projects</a>
+            <a href="#contact">Contact</a>
+          </nav>
+        </div>
+      </header>
+      <section className="hero">
+        <div id="portfolio-banner">
+          {bannerType === 'night' ? (
+            <img
+              src="/textures/skybox/Night.jpg"
+              alt="Night banner"
+              style={{ position: 'absolute', top: 0, left: 0, width: '100%', height: '100%', objectFit: 'cover', zIndex: 0 }}
+            />
+          ) : (
+            <video
+              key={bannerType}
+              ref={videoRef}
+              muted
+              playsInline
+              preload="auto"
+              src={
+                bannerType === 'rain'
+                  ? '/textures/skybox/stormy day.mp4'
+                  : '/textures/skybox/rolling clouds.mp4'
+              }
+              style={{ position: 'absolute', top: 0, left: 0, width: '100%', height: '100%', objectFit: 'cover', zIndex: 0 }}
+            />
+          )}
+          <div className="container banner-content">
+            <h2>Welcome to My <span className="highlight" data-text="Portfolio">Portfolio</span></h2>
+            <p>Here lies the Culmination of Fruits from My Blood, Sweat, and Tears.</p>
+            <a
+              href="#projects"
+              className="cta-btn"
+              onMouseMove={(e) => {
+                const rect = e.currentTarget.getBoundingClientRect();
+                const x = ((e.clientX - rect.left) / rect.width) * 100;
+                const y = ((e.clientY - rect.top) / rect.height) * 100;
+                e.currentTarget.style.setProperty('--mouse-x', `${x}%`);
+                e.currentTarget.style.setProperty('--mouse-y', `${y}%`);
+              }}
+            >
+              <span>View Projects</span>
+            </a>
+          </div>
+        </div>
+      </section>
+      <section className="about" id="about">
+        <div className="container">
+          <h3>About Me</h3>
+          <p>My biggest passion in tech involves creating innovative websites and bringing creative ideas to life through code.</p>
+        </div>
+      </section>
+      <section className="projects" id="projects">
+        <div className="container">
+          <h3>Projects</h3>
+          <ul className="project-list">
+            <li className="project-item">Project 1 - Description</li>
+            <li className="project-item">Project 2 - Description</li>
+            <li className="project-item">Project 3 - Description</li>
+          </ul>
+        </div>
+      </section>
+      <section className="contact" id="contact">
+        <div className="container">
+          <h3>Contact</h3>
+          <div className="contact-icons" style={{ display: 'flex', gap: '1.5rem', marginTop: '1rem', fontSize: '2rem' }}>
+            <span title="GitHub" style={{ cursor: 'pointer' }}>
+              <svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M12 2C6.477 2 2 6.484 2 12.021c0 4.428 2.865 8.184 6.839 9.504.5.092.682-.217.682-.482 0-.237-.009-.868-.014-1.703-2.782.605-3.369-1.342-3.369-1.342-.454-1.154-1.11-1.462-1.11-1.462-.908-.62.069-.608.069-.608 1.004.07 1.532 1.032 1.532 1.032.892 1.53 2.341 1.088 2.91.832.092-.647.35-1.088.636-1.339-2.221-.253-4.555-1.113-4.555-4.951 0-1.093.39-1.987 1.029-2.686-.103-.253-.446-1.272.098-2.65 0 0 .84-.27 2.75 1.025A9.564 9.564 0 0 1 12 6.844c.85.004 1.705.115 2.504.337 1.909-1.295 2.748-1.025 2.748-1.025.546 1.378.202 2.397.1 2.65.64.699 1.028 1.593 1.028 2.686 0 3.847-2.337 4.695-4.566 4.944.359.309.678.92.678 1.855 0 1.338-.012 2.419-.012 2.749 0 .267.18.577.688.479C19.138 20.2 22 16.447 22 12.021 22 6.484 17.523 2 12 2z"/></svg>
+            </span>
+            <span title="LinkedIn" style={{ cursor: 'pointer' }}>
+              <svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M16 8a6 6 0 0 1 6 6v7h-4v-7a2 2 0 0 0-4 0v7h-4v-7a6 6 0 0 1 6-6z"/><rect x="2" y="9" width="4" height="12"/><circle cx="4" cy="4" r="2"/></svg>
+            </span>
+            <span title="Email" style={{ cursor: 'pointer' }}>
+              <svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><rect x="3" y="5" width="18" height="14" rx="2" ry="2"/><polyline points="3 7 12 13 21 7"/></svg>
+            </span>
+          </div>
+        </div>
+      </section>
+      <footer className="footer">
+        <div className="container">
+          <p>&copy; {new Date().getFullYear()} Your Name. All rights reserved.</p>
+        </div>
+      </footer>
+      <div style={{ height: '200vh', background: '#f7f8fa', display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'center' }}>
+        <h2>Scroll Debug Section</h2>
+        <p>This extra content is here to help you test the scroll-driven video banner. Scroll up and down to see the effect.</p>
+        <ul style={{ maxWidth: 600, textAlign: 'left' }}>
+          <li>Try scrolling slowly and quickly.</li>
+          <li>Observe the video progress as you scroll.</li>
+          <li>Remove this section when you're done debugging.</li>
+        </ul>
+      </div>
+      <div style={{ height: '200vh' }} />
+    </div>
+  );
+}
+
+export default App;
