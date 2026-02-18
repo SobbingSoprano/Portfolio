@@ -13,6 +13,35 @@ function App() {
   const videoRef = useRef<HTMLVideoElement>(null);
   const [currentSkill, setCurrentSkill] = useState(0);
   const [animState, setAnimState] = useState<'reset' | 'entering' | 'visible' | 'exiting'>('reset');
+  const [expandedProject, setExpandedProject] = useState<number | null>(null);
+
+  const projects = [
+    {
+      id: 1,
+      title: 'What Machines Hear',
+      subtitle: 'Real-Time Binary Audio Visualization & Conversion Platform',
+      media: '/media/Wmh.mp4', 
+      mediaType: 'video' as const,
+    },
+    {
+      id: 2,
+      title: 'NexQuery',
+      subtitle: 'Intelligent Workforce Analytics & Management Suite',
+      media: '', 
+      mediaType: 'video' as const,
+    },
+    {
+      id: 3,
+      title: 'Vibz Check',
+      subtitle: 'AI-Powered Collaborative Social Music Experience',
+      media: '/media/VC1.png', 
+      mediaType: 'image' as const,
+    },
+  ];
+
+  const handleProjectClick = (id: number) => {
+    setExpandedProject(expandedProject === id ? null : id);
+  };
 
   useEffect(() => {
     const timers: ReturnType<typeof setTimeout>[] = [];
@@ -212,11 +241,46 @@ function App() {
       <section className="projects" id="projects">
         <div className="container">
           <h3>Projects</h3>
-          <ul className="project-list">
-            <li className="project-item">What Machines Hear: Real-Time Binary Audio Visualization & Conversion Platform</li>
-            <li className="project-item">NexQuery: Intelligent Workforce Analytics & Management Suite</li>
-            <li className="project-item">Vibz Check: AI-Powered Collaborative Social Music Experience</li>
-          </ul>
+          <div className="project-cards">
+            {projects.map((project) => (
+              <div key={project.id} className="project-card-wrapper">
+                <div
+                  className={`project-card ${expandedProject === project.id ? 'expanded' : ''}`}
+                  onClick={() => handleProjectClick(project.id)}
+                >
+                  <div className="project-media">
+                    {project.mediaType === 'video' ? (
+                      <video 
+                        muted 
+                        loop 
+                        playsInline 
+                        autoPlay
+                        onEnded={(e) => {
+                          const video = e.currentTarget;
+                          video.currentTime = 0;
+                          video.play();
+                        }}
+                      >
+                        <source src={project.media} type="video/mp4" />
+                      </video>
+                    ) : (
+                      <img src={project.media} alt={project.title} />
+                    )}
+                  </div>
+                  <div className="project-title-overlay">
+                    <h4>{project.title}</h4>
+                    <p>{project.subtitle}</p>
+                  </div>
+                </div>
+                <div className={`project-details ${expandedProject === project.id ? 'visible' : ''}`}>
+                  <div className="project-details-content">
+                    {/* Add your additional content here: video, image, or description */}
+                    <p>More details coming soon...</p>
+                  </div>
+                </div>
+              </div>
+            ))}
+          </div>
         </div>
       </section>
       <section className="contact" id="contact">
