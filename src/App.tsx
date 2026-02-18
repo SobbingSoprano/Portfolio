@@ -3,9 +3,35 @@ import './App.css';
 
 const WEATHER_API_KEY = '8b6da581100d8da99007e32097e1604a'; // Replace with your actual API key
 
+const skills = [
+  'JavaScript', 'HTML', 'CSS', 'Bootstrap', 'WordPress', 'Ruby', 'Python', 'C++', 'Java', 'PHP', 'Dart',
+  'WordPress (Elementor, Brizy)', 'phpMyAdmin', 'MySQL', 'Apache Web Server', 'DBeaver', 'Android Studio', 'XAMPP', 'Flutter'
+];
+
 function App() {
   const [bannerType, setBannerType] = useState<'default' | 'rain' | 'night'>('default');
   const videoRef = useRef<HTMLVideoElement>(null);
+  const [currentSkill, setCurrentSkill] = useState(0);
+  const [animState, setAnimState] = useState<'reset' | 'entering' | 'visible' | 'exiting'>('reset');
+
+  useEffect(() => {
+    const timers: ReturnType<typeof setTimeout>[] = [];
+
+    const cycle = () => {
+      setAnimState('reset');
+      timers.push(setTimeout(() => setAnimState('entering'), 50));
+      timers.push(setTimeout(() => setAnimState('visible'), 650));
+      timers.push(setTimeout(() => setAnimState('exiting'), 2250));
+      timers.push(setTimeout(() => {
+        setCurrentSkill((prev) => (prev + 1) % skills.length);
+        cycle();
+      }, 2850));
+    };
+
+    cycle();
+
+    return () => timers.forEach(clearTimeout);
+  }, []);
 
   useEffect(() => {
     // Check for night based on system time
@@ -108,7 +134,7 @@ function App() {
       const maxScroll = document.documentElement.scrollHeight - window.innerHeight;
       const scrollFraction = maxScroll > 0 ? (scrollTop / maxScroll) : 0;
       // Super aggressive gradient movement
-      const gradientPos = scrollFraction * 1000; // 10x multiplier for very aggressive movement
+      const gradientPos = scrollFraction * 200; // 10x multiplier for very aggressive movement
       document.documentElement.style.setProperty('--gradient-pos', `${gradientPos}%`);
     };
 
@@ -176,15 +202,20 @@ function App() {
         <div className="container">
           <h3>About Me</h3>
           <p>My biggest passion in tech involves creating innovative websites and bringing creative ideas to life through code.</p>
+          <div className="carousel-container">
+            <div className={`skill-card ${animState}`}>
+              {skills[currentSkill]}
+            </div>
+          </div>
         </div>
       </section>
       <section className="projects" id="projects">
         <div className="container">
           <h3>Projects</h3>
           <ul className="project-list">
-            <li className="project-item">Project 1 - Description</li>
-            <li className="project-item">Project 2 - Description</li>
-            <li className="project-item">Project 3 - Description</li>
+            <li className="project-item">What Machines Hear: Real-Time Binary Audio Visualization & Conversion Platform</li>
+            <li className="project-item">NexQuery: Intelligent Workforce Analytics & Management Suite</li>
+            <li className="project-item">Vibz Check: AI-Powered Collaborative Social Music Experience</li>
           </ul>
         </div>
       </section>
@@ -192,33 +223,29 @@ function App() {
         <div className="container">
           <h3>Contact</h3>
           <div className="contact-icons" style={{ display: 'flex', gap: '1.5rem', marginTop: '1rem', fontSize: '2rem' }}>
-            <span title="GitHub" style={{ cursor: 'pointer' }}>
-              <svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M12 2C6.477 2 2 6.484 2 12.021c0 4.428 2.865 8.184 6.839 9.504.5.092.682-.217.682-.482 0-.237-.009-.868-.014-1.703-2.782.605-3.369-1.342-3.369-1.342-.454-1.154-1.11-1.462-1.11-1.462-.908-.62.069-.608.069-.608 1.004.07 1.532 1.032 1.532 1.032.892 1.53 2.341 1.088 2.91.832.092-.647.35-1.088.636-1.339-2.221-.253-4.555-1.113-4.555-4.951 0-1.093.39-1.987 1.029-2.686-.103-.253-.446-1.272.098-2.65 0 0 .84-.27 2.75 1.025A9.564 9.564 0 0 1 12 6.844c.85.004 1.705.115 2.504.337 1.909-1.295 2.748-1.025 2.748-1.025.546 1.378.202 2.397.1 2.65.64.699 1.028 1.593 1.028 2.686 0 3.847-2.337 4.695-4.566 4.944.359.309.678.92.678 1.855 0 1.338-.012 2.419-.012 2.749 0 .267.18.577.688.479C19.138 20.2 22 16.447 22 12.021 22 6.484 17.523 2 12 2z"/></svg>
-            </span>
-            <span title="LinkedIn" style={{ cursor: 'pointer' }}>
-              <svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M16 8a6 6 0 0 1 6 6v7h-4v-7a2 2 0 0 0-4 0v7h-4v-7a6 6 0 0 1 6-6z"/><rect x="2" y="9" width="4" height="12"/><circle cx="4" cy="4" r="2"/></svg>
-            </span>
-            <span title="Email" style={{ cursor: 'pointer' }}>
-              <svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><rect x="3" y="5" width="18" height="14" rx="2" ry="2"/><polyline points="3 7 12 13 21 7"/></svg>
-            </span>
+            <a href="https://github.com/sobbingsoprano" target="_blank" rel="noopener noreferrer" title="GitHub">
+              <span style={{ cursor: 'pointer' }}>
+                <svg width="64" height="64" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M12 2C6.477 2 2 6.484 2 12.021c0 4.428 2.865 8.184 6.839 9.504.5.092.682-.217.682-.482 0-.237-.009-.868-.014-1.703-2.782.605-3.369-1.342-3.369-1.342-.454-1.154-1.11-1.462-1.11-1.462-.908-.62.069-.608.069-.608 1.004.07 1.532 1.032 1.532 1.032.892 1.53 2.341 1.088 2.91.832.092-.647.35-1.088.636-1.339-2.221-.253-4.555-1.113-4.555-4.951 0-1.093.39-1.987 1.029-2.686-.103-.253-.446-1.272.098-2.65 0 0 .84-.27 2.75 1.025A9.564 9.564 0 0 1 12 6.844c.85.004 1.705.115 2.504.337 1.909-1.295 2.748-1.025 2.748-1.025.546 1.378.202 2.397.1 2.65.64.699 1.028 1.593 1.028 2.686 0 3.847-2.337 4.695-4.566 4.944.359.309.678.92.678 1.855 0 1.338-.012 2.419-.012 2.749 0 .267.18.577.688.479C19.138 20.2 22 16.447 22 12.021 22 6.484 17.523 2 12 2z"/></svg>
+              </span>
+            </a>
+            <a href="https://www.linkedin.com/in/kent-h-7bb7441b5" target="_blank" rel="noopener noreferrer" title="LinkedIn">
+              <span style={{ cursor: 'pointer' }}>
+                <svg width="64" height="64" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M16 8a6 6 0 0 1 6 6v7h-4v-7a2 2 0 0 0-4 0v7h-4v-7a6 6 0 0 1 6-6z"/><rect x="2" y="9" width="4" height="12"/><circle cx="4" cy="4" r="2"/></svg>
+              </span>
+            </a>
+            <a href="mailto:kd35443@email.com" title="Email">
+              <span style={{ cursor: 'pointer' }}>
+                <svg width="64" height="64" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><rect x="3" y="7" width="18" height="14" rx="2" ry="2"/><polyline points="4 7 12 13 20 7"/></svg>
+              </span>
+            </a>
           </div>
         </div>
       </section>
       <footer className="footer">
         <div className="container">
-          <p>&copy; {new Date().getFullYear()} Your Name. All rights reserved.</p>
+          <p>&copy; {new Date().getFullYear()} Kent Harmon. All rights reserved.</p>
         </div>
       </footer>
-      <div style={{ height: '200vh', background: '#f7f8fa', display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'center' }}>
-        <h2>Scroll Debug Section</h2>
-        <p>This extra content is here to help you test the scroll-driven video banner. Scroll up and down to see the effect.</p>
-        <ul style={{ maxWidth: 600, textAlign: 'left' }}>
-          <li>Try scrolling slowly and quickly.</li>
-          <li>Observe the video progress as you scroll.</li>
-          <li>Remove this section when you're done debugging.</li>
-        </ul>
-      </div>
-      <div style={{ height: '200vh' }} />
     </div>
   );
 }
