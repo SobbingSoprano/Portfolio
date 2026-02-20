@@ -296,6 +296,86 @@ a:hover {
   font-size: 1.1rem;
   margin: 0;
 }
+
+.tech-section {
+  margin-bottom: 1.5rem;
+}
+
+.tech-section:last-child {
+  margin-bottom: 0;
+}
+
+.tech-section h5 {
+  color: #2a3a5e;
+  font-size: 1rem;
+  font-weight: 600;
+  margin: 0 0 0.75rem 0;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+}
+
+.tech-tags {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.5rem;
+}
+
+.tech-tag {
+  background: linear-gradient(135deg, #0078d7, #00a8ff);
+  color: #fff;
+  padding: 0.4rem 0.9rem;
+  border-radius: 2rem;
+  font-size: 0.9rem;
+  font-weight: 500;
+  box-shadow: 0 2px 8px rgba(0, 120, 215, 0.3);
+  transition: transform 0.2s ease, box-shadow 0.2s ease;
+}
+
+.tech-tag:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 4px 12px rgba(0, 120, 215, 0.4);
+}
+
+.tech-tag.api-tag {
+  background: linear-gradient(135deg, #6c5ce7, #a29bfe);
+  box-shadow: 0 2px 8px rgba(108, 92, 231, 0.3);
+}
+
+.tech-tag.api-tag:hover {
+  box-shadow: 0 4px 12px rgba(108, 92, 231, 0.4);
+}
+
+.github-section {
+  margin-top: 1.5rem;
+  padding-top: 1.5rem;
+  border-top: 1px solid rgba(42, 58, 94, 0.15);
+}
+
+.github-link {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+  background: linear-gradient(135deg, #24292e, #404448);
+  color: #fff;
+  padding: 0.75rem 1.25rem;
+  border-radius: 0.5rem;
+  text-decoration: none;
+  font-weight: 500;
+  font-size: 0.95rem;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.2);
+  transition: transform 0.2s ease, box-shadow 0.2s ease, background 0.2s ease;
+}
+
+.github-link:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
+  background: linear-gradient(135deg, #2f363d, #505458);
+}
+
+.github-link svg {
+  flex-shrink: 0;
+}
+
 .footer {
   background: #2a3a5e;
   color: #fff;
