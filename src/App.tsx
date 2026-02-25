@@ -20,7 +20,7 @@ function App() {
       id: 1,
       title: 'What Machines Hear',
       subtitle: 'Real-Time Binary Audio Visualization & Conversion Platform',
-      media: '/media/Wmh.mp4', 
+      media: `${import.meta.env.BASE_URL}media/Wmh.mp4`, 
       mediaType: 'video' as const,
       techStack: ['HTML', 'CSS', 'JavaScript', 'React.js', 'Vite'],
       apis: ['Spotify API'],
@@ -30,7 +30,7 @@ function App() {
       id: 2,
       title: 'NexQuery',
       subtitle: 'Intelligent Workforce Analytics & Management Suite',
-      media: '/media/nEXQUERY.mp4', 
+      media: `${import.meta.env.BASE_URL}media/nEXQUERY.mp4`, 
       mediaType: 'video' as const,
       techStack: ['Java', 'DBeaver'],
       apis: ['Google Firestore Suite (Authentication)'],
@@ -40,7 +40,7 @@ function App() {
       id: 3,
       title: 'Vibz Check',
       subtitle: 'AI-Powered Collaborative Social Music Experience',
-      media: '/media/VC1.png', 
+      media: `${import.meta.env.BASE_URL}media/VC1.png`, 
       mediaType: 'image' as const,
       techStack: ['Dart', 'Flutter'],
       apis: ['Google Firestore Suite (Authentication)', 'Spotify Playback API', 'Deezer API'],
@@ -198,7 +198,7 @@ function App() {
         <div id="portfolio-banner">
           {bannerType === 'night' ? (
             <img
-              src="/textures/skybox/Night.jpg"
+              src={`${import.meta.env.BASE_URL}textures/skybox/Night.jpg`}
               alt="Night banner"
               style={{ position: 'absolute', top: 0, left: 0, width: '100%', height: '100%', objectFit: 'cover', zIndex: 0 }}
             />
@@ -211,8 +211,8 @@ function App() {
               preload="auto"
               src={
                 bannerType === 'rain'
-                  ? '/textures/skybox/stormy day.mp4'
-                  : '/textures/skybox/rolling clouds.mp4'
+                  ? `${import.meta.env.BASE_URL}textures/skybox/stormy day.mp4`
+                  : `${import.meta.env.BASE_URL}textures/skybox/rolling clouds.mp4`
               }
               style={{ position: 'absolute', top: 0, left: 0, width: '100%', height: '100%', objectFit: 'cover', zIndex: 0 }}
             />
