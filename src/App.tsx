@@ -78,7 +78,7 @@ function App() {
       setBannerType('night');
       return;
     }
-    // Try geolocation for weather
+    // geolocation for weather
     if (navigator.geolocation) {
       navigator.geolocation.getCurrentPosition(
         async (position) => {
