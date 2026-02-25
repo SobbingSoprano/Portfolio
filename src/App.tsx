@@ -1,4 +1,5 @@
 import { useEffect, useState, useRef } from 'react';
+import { Link } from 'react-router-dom';
 import './App.css';
 
 const WEATHER_API_KEY = '8b6da581100d8da99007e32097e1604a'; // Replace with your actual API key
@@ -7,6 +8,13 @@ const skills = [
   'JavaScript', 'HTML', 'CSS', 'Bootstrap', 'WordPress', 'Ruby', 'Python', 'C++', 'Java', 'PHP', 'Dart',
   'WordPress (Elementor, Brizy)', 'phpMyAdmin', 'MySQL', 'Apache Web Server', 'DBeaver', 'Android Studio', 'XAMPP', 'Flutter'
 ];
+
+const scrollToSection = (id: string) => {
+  const element = document.getElementById(id);
+  if (element) {
+    element.scrollIntoView({ behavior: 'smooth' });
+  }
+};
 
 function App() {
   const [bannerType, setBannerType] = useState<'default' | 'rain' | 'night'>('default');
@@ -188,9 +196,10 @@ function App() {
         <div className="container">
           <h1 className="logo">Kent Harmon</h1>
           <nav className="nav">
-            <a href="#about">About</a>
-            <a href="#projects">Projects</a>
-            <a href="#contact">Contact</a>
+            <a href="#about" onClick={(e) => { e.preventDefault(); scrollToSection('about'); }}>About</a>
+            <a href="#projects" onClick={(e) => { e.preventDefault(); scrollToSection('projects'); }}>Projects</a>
+            <a href="#contact" onClick={(e) => { e.preventDefault(); scrollToSection('contact'); }}>Contact</a>
+            <Link to="/concepts">Concepts</Link>
           </nav>
         </div>
       </header>
@@ -223,6 +232,7 @@ function App() {
             <a
               href="#projects"
               className="cta-btn"
+              onClick={(e) => { e.preventDefault(); scrollToSection('projects'); }}
               onMouseMove={(e) => {
                 const rect = e.currentTarget.getBoundingClientRect();
                 const x = ((e.clientX - rect.left) / rect.width) * 100;
