@@ -2,6 +2,89 @@ import { useEffect, useState, useRef } from 'react';
 import { Link } from 'react-router-dom';
 import './App.css';
 
+// Lazy loaded component for project videos (performance optimization)
+const LazyVideo: React.FC<{ src: string; className?: string }> = ({ src, className }) => {
+  const videoRef = useRef<HTMLVideoElement>(null);
+  const [isVisible, setIsVisible] = useState(false);
+
+  useEffect(() => {
+    const observer = new IntersectionObserver(
+      ([entry]) => {
+        if (entry.isIntersecting) {
+          setIsVisible(true);
+          observer.disconnect();
+        }
+      },
+      { threshold: 0.1, rootMargin: '100px' }
+    );
+
+    if (videoRef.current) {
+      observer.observe(videoRef.current);
+    }
+
+    return () => observer.disconnect();
+  }, []);
+
+  return (
+    <video
+      ref={videoRef}
+      muted
+      loop
+      playsInline
+      autoPlay={isVisible}
+      className={className}
+      onEnded={(e) => {
+        const video = e.currentTarget;
+        video.currentTime = 0;
+        video.play();
+      }}
+    >
+      {isVisible && <source src={src} type="video/mp4" />}
+    </video>
+  );
+};
+
+// Lazy loaded image component with intersection observer
+const LazyImage: React.FC<{ src: string; alt: string; className?: string; style?: React.CSSProperties }> = ({ src, alt, className, style }) => {
+  const imgRef = useRef<HTMLImageElement>(null);
+  const [isLoaded, setIsLoaded] = useState(false);
+  const [isVisible, setIsVisible] = useState(false);
+
+  useEffect(() => {
+    const observer = new IntersectionObserver(
+      ([entry]) => {
+        if (entry.isIntersecting) {
+          setIsVisible(true);
+          observer.disconnect();
+        }
+      },
+      { threshold: 0.1, rootMargin: '50px' }
+    );
+
+    if (imgRef.current) {
+      observer.observe(imgRef.current);
+    }
+
+    return () => observer.disconnect();
+  }, []);
+
+  return (
+    <img
+      ref={imgRef}
+      src={isVisible ? src : ''}
+      alt={alt}
+      className={className}
+      style={{
+        ...style,
+        opacity: isLoaded ? 1 : 0,
+        transition: 'opacity 0.3s ease-in-out'
+      }}
+      loading="lazy"
+      onLoad={() => setIsLoaded(true)}
+    />
+  );
+};
+
 const WEATHER_API_KEY = '8b6da581100d8da99007e32097e1604a'; // Replace with your actual API key
 
 const skills = [
@@ -269,21 +352,9 @@ function App() {
                 >
                   <div className="project-media">
                     {project.mediaType === 'video' ? (
-                      <video 
-                        muted 
-                        loop 
-                        playsInline 
-                        autoPlay
-                        onEnded={(e) => {
-                          const video = e.currentTarget;
-                          video.currentTime = 0;
-                          video.play();
-                        }}
-                      >
-                        <source src={project.media} type="video/mp4" />
-                      </video>
+                      <LazyVideo src={project.media} />
                     ) : (
-                      <img src={project.media} alt={project.title} />
+                      <LazyImage src={project.media} alt={project.title} />
                     )}
                   </div>
                   <div className="project-title-overlay">

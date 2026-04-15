@@ -2,6 +2,25 @@
 <html lang="en">
   <head>
     <meta charset="UTF-8" />
+    <!-- Content Security Policy - XSS & Injection Protection -->
+    <meta http-equiv="Content-Security-Policy" content="
+      default-src 'self';
+      script-src 'self' 'unsafe-inline' https://www.googletagmanager.com https://www.google-analytics.com;
+      style-src 'self' 'unsafe-inline' https://fonts.googleapis.com;
+      font-src 'self' https://fonts.gstatic.com;
+      img-src 'self' data: https: blob:;
+      media-src 'self' blob:;
+      connect-src 'self' https://ipapi.co https://api.openweathermap.org https://www.google-analytics.com https://region1.google-analytics.com;
+      frame-ancestors 'none';
+      form-action 'self';
+      base-uri 'self';
+    ">
+    <!-- X-Content-Type-Options - Prevent MIME sniffing -->
+    <meta http-equiv="X-Content-Type-Options" content="nosniff">
+    <!-- X-Frame-Options - Clickjacking protection -->
+    <meta http-equiv="X-Frame-Options" content="DENY">
+    <!-- Referrer Policy - Privacy protection -->
+    <meta name="referrer" content="strict-origin-when-cross-origin">
     <link rel="apple-touch-icon" sizes="180x180" href="/media/favicon_io/apple-touch-icon.png">
     <link rel="icon" type="image/png" sizes="32x32" href="/media/favicon_io/favicon-32x32.png">
     <link rel="icon" type="image/png" sizes="16x16" href="/media/favicon_io/favicon-16x16.png">
@@ -9,6 +28,14 @@
     <link rel="manifest" href="/media/favicon_io/site.webmanifest">
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Kent Harmon | Portfolio</title>
+    <!-- Google tag (gtag.js) -->
+    <script async src="https://www.googletagmanager.com/gtag/js?id=G-SFJNHS57D3"></script>
+    <script>
+      window.dataLayer = window.dataLayer || [];
+      function gtag(){dataLayer.push(arguments);}
+      gtag('js', new Date());
+      gtag('config', 'G-SFJNHS57D3');
+    </script>
   </head>
   <body>
     <div id="root"></div>

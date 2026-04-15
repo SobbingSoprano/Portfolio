@@ -1,5 +1,6 @@
 import { useState } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
+import DOMPurify from 'dompurify';
 import './App.css';
 
 interface NetworkInfo {
@@ -15,6 +16,11 @@ function Concepts() {
   const [networkInfo, setNetworkInfo] = useState<NetworkInfo | null>(null);
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
+  
+  // XSS Demo states
+  const [unsafeInput, setUnsafeInput] = useState('');
+  const [sanitizedOutput, setSanitizedOutput] = useState('');
+  const [showXssDemo, setShowXssDemo] = useState(false);
 
   const goToSection = (section: string) => {
     navigate('/');
@@ -45,6 +51,17 @@ function Concepts() {
     } finally {
       setLoading(false);
     }
+  };
+
+  // XSS Prevention demonstration
+  const handleXssDemo = () => {
+    // Sanitize input using DOMPurify
+    const clean = DOMPurify.sanitize(unsafeInput, {
+      ALLOWED_TAGS: ['b', 'i', 'em', 'strong'],
+      ALLOWED_ATTR: []
+    });
+    setSanitizedOutput(clean);
+    setShowXssDemo(true);
   };
 
   return (
@@ -250,6 +267,271 @@ function Concepts() {
                 <p><code>500 Internal Server Error</code></p>
                 <p><code>503 Service Unavailable</code></p>
               </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      {/* Web Security Section */}
+      <section className="projects" id="security-section">
+        <div className="container">
+          <h3>Web Security Fundamentals</h3>
+          <div className="concept-content">
+            <p>
+              <strong>Why Security Matters:</strong> Web applications face constant threats from attackers 
+              trying to steal data, inject malicious code, or hijack user sessions. Understanding these 
+              vulnerabilities is essential for building secure applications.
+            </p>
+
+            {/* HTTPS Section */}
+            <div className="security-topic">
+              <h4>🔒 HTTPS & SSL/TLS</h4>
+              <p>
+                HTTPS encrypts all data transmitted between the browser and server using SSL/TLS certificates.
+                This prevents man-in-the-middle attacks and eavesdropping.
+              </p>
+              <div className="protocol-comparison">
+                <div className="protocol-type http">
+                  <h5>Without HTTPS</h5>
+                  <ul>
+                    <li>Data visible to attackers</li>
+                    <li>Passwords can be intercepted</li>
+                    <li>No server identity verification</li>
+                  </ul>
+                </div>
+                <div className="protocol-type https">
+                  <h5>With HTTPS</h5>
+                  <ul>
+                    <li>256-bit encryption</li>
+                    <li>Certificate verification</li>
+                    <li>Browser trust indicators</li>
+                  </ul>
+                </div>
+              </div>
+              <p className="security-tip">
+                <strong>Free HTTPS:</strong> GitHub Pages, Netlify, Vercel, and Cloudflare all provide 
+                free SSL certificates automatically.
+              </p>
+            </div>
+
+            {/* XSS Section with Demo */}
+            <div className="security-topic">
+              <h4>⚠️ XSS (Cross-Site Scripting)</h4>
+              <p>
+                XSS attacks occur when malicious scripts are injected into web pages. Attackers can steal 
+                cookies, session tokens, or redirect users to malicious sites.
+              </p>
+              
+              <div className="demo-container">
+                <h5>Interactive XSS Prevention Demo</h5>
+                <p>Try entering some HTML or a script tag below to see how DOMPurify sanitizes it:</p>
+                <div className="xss-demo">
+                  <div className="demo-input-group">
+                    <label>Enter potentially malicious input:</label>
+                    <input
+                      type="text"
+                      value={unsafeInput}
+                      onChange={(e) => setUnsafeInput(e.target.value)}
+                      placeholder='Try: <script>alert("XSS")</script> or <img src=x onerror=alert(1)>'
+                      className="demo-input"
+                    />
+                    <button className="cta-btn demo-btn" onClick={handleXssDemo}>
+                      <span>Sanitize Input</span>
+                    </button>
+                  </div>
+                  {showXssDemo && (
+                    <div className="demo-results">
+                      <div className="result-row">
+                        <span className="result-label unsafe">Raw Input:</span>
+                        <code className="result-value">{unsafeInput || '(empty)'}</code>
+                      </div>
+                      <div className="result-row">
+                        <span className="result-label safe">Sanitized:</span>
+                        <code className="result-value">{sanitizedOutput || '(all malicious content removed)'}</code>
+                      </div>
+                    </div>
+                  )}
+                </div>
+              </div>
+
+              <div className="code-block">
+                <code>
+                  // Using DOMPurify to sanitize user input<br/>
+                  import DOMPurify from 'dompurify';<br/><br/>
+                  const cleanInput = DOMPurify.sanitize(userInput);<br/>
+                  // Malicious scripts are automatically removed
+                </code>
+              </div>
+            </div>
+
+            {/* SQL Injection Section */}
+            <div className="security-topic">
+              <h4>💉 SQL Injection</h4>
+              <p>
+                SQL injection occurs when attackers insert malicious SQL code into queries. This can 
+                expose, modify, or delete database contents.
+              </p>
+              <div className="code-block vulnerable">
+                <code>
+                  ❌ VULNERABLE CODE:<br/>
+                  const query = "SELECT * FROM users WHERE id = " + userId;<br/>
+                  // If userId = "1 OR 1=1" → returns ALL users!
+                </code>
+              </div>
+              <div className="code-block secure">
+                <code>
+                  ✅ SECURE CODE (Parameterized Query):<br/>
+                  const query = "SELECT * FROM users WHERE id = ?";<br/>
+                  db.execute(query, [userId]);<br/>
+                  // User input is treated as data, not code
+                </code>
+              </div>
+            </div>
+
+            {/* CSRF Section */}
+            <div className="security-topic">
+              <h4>🛡️ CSRF (Cross-Site Request Forgery)</h4>
+              <p>
+                CSRF attacks trick users into performing unwanted actions on authenticated sites. 
+                Attackers exploit the browser's automatic cookie submission.
+              </p>
+              <div className="protection-list">
+                <h5>Prevention Methods:</h5>
+                <ul>
+                  <li><strong>CSRF Tokens:</strong> Unique, unpredictable tokens verified on each request</li>
+                  <li><strong>SameSite Cookies:</strong> Set cookies with <code>SameSite=Strict</code></li>
+                  <li><strong>Origin Validation:</strong> Verify request origin headers</li>
+                </ul>
+              </div>
+            </div>
+
+            {/* Session Security */}
+            <div className="security-topic">
+              <h4>🍪 Secure Cookie Configuration</h4>
+              <div className="code-block">
+                <code>
+                  // Secure cookie settings<br/>
+                  Set-Cookie: sessionId=abc123;<br/>
+                  &nbsp;&nbsp;HttpOnly;      // Prevents JavaScript access<br/>
+                  &nbsp;&nbsp;Secure;        // HTTPS only<br/>
+                  &nbsp;&nbsp;SameSite=Strict; // CSRF protection<br/>
+                  &nbsp;&nbsp;Max-Age=3600   // 1 hour expiry
+                </code>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      {/* Network Monitoring Section */}
+      <section className="about" id="monitoring-section">
+        <div className="container">
+          <h3>Network Monitoring & Analytics</h3>
+          <div className="concept-content">
+            <p>
+              <strong>Why Monitor?</strong> Network monitoring helps identify security threats, 
+              analyze traffic patterns, optimize performance, and understand user behavior.
+            </p>
+
+            <div className="monitoring-tools">
+              <div className="tool-card">
+                <h4>📊 Google Analytics</h4>
+                <p>Track website traffic, user behavior, and conversion metrics.</p>
+                <ul>
+                  <li>Real-time visitor data</li>
+                  <li>Traffic sources analysis</li>
+                  <li>User demographics</li>
+                  <li>Page performance metrics</li>
+                </ul>
+                <div className="code-block">
+                  <code>
+                    // Google Analytics 4 setup<br/>
+                    gtag('config', 'G-XXXXXXXXXX');<br/>
+                    gtag('event', 'page_view', &#123;<br/>
+                    &nbsp;&nbsp;page_title: document.title,<br/>
+                    &nbsp;&nbsp;page_location: window.location.href<br/>
+                    &#125;);
+                  </code>
+                </div>
+              </div>
+
+              <div className="tool-card">
+                <h4>🦈 Wireshark</h4>
+                <p>Deep packet inspection and network protocol analysis.</p>
+                <ul>
+                  <li>Capture live network traffic</li>
+                  <li>Analyze HTTP/HTTPS requests</li>
+                  <li>Detect anomalies and intrusions</li>
+                  <li>Debug network issues</li>
+                </ul>
+                <div className="code-block">
+                  <code>
+                    # Wireshark filter examples<br/>
+                    http.request.method == "POST"<br/>
+                    ip.addr == 192.168.1.1<br/>
+                    tcp.port == 443
+                  </code>
+                </div>
+              </div>
+
+              <div className="tool-card">
+                <h4>📈 Prometheus & Grafana</h4>
+                <p>Open-source monitoring and alerting toolkit.</p>
+                <ul>
+                  <li>Time-series metrics collection</li>
+                  <li>Custom dashboards</li>
+                  <li>Alerting rules</li>
+                  <li>Service health monitoring</li>
+                </ul>
+              </div>
+
+              <div className="tool-card">
+                <h4>🌐 Content Security Policy (CSP)</h4>
+                <p>Browser security layer that prevents XSS and injection attacks.</p>
+                <div className="code-block">
+                  <code>
+                    &lt;meta http-equiv="Content-Security-Policy"<br/>
+                    &nbsp;&nbsp;content="default-src 'self';<br/>
+                    &nbsp;&nbsp;script-src 'self' https://trusted.com;<br/>
+                    &nbsp;&nbsp;style-src 'self' 'unsafe-inline';"&gt;
+                  </code>
+                </div>
+              </div>
+            </div>
+
+            {/* Security Implementation Status */}
+            <div className="implementation-status">
+              <h4>🔐 This Website's Security Features</h4>
+              <div className="status-grid">
+                <div className="status-item implemented">
+                  <span className="status-icon">✅</span>
+                  <span>Content Security Policy (CSP)</span>
+                </div>
+                <div className="status-item implemented">
+                  <span className="status-icon">✅</span>
+                  <span>XSS Protection (DOMPurify)</span>
+                </div>
+                <div className="status-item implemented">
+                  <span className="status-icon">✅</span>
+                  <span>X-Frame-Options (Clickjacking Protection)</span>
+                </div>
+                <div className="status-item implemented">
+                  <span className="status-icon">✅</span>
+                  <span>Referrer Policy</span>
+                </div>
+                <div className="status-item implemented">
+                  <span className="status-icon">✅</span>
+                  <span>Lazy Loading (Performance)</span>
+                </div>
+                <div className="status-item implemented">
+                  <span className="status-icon">✅</span>
+                  <span>Google Analytics Ready</span>
+                </div>
+              </div>
+              <p className="deploy-note">
+                <strong>Note:</strong> HTTPS is automatically enabled when deployed to GitHub Pages, 
+                Netlify, or Vercel. No additional configuration required!
+              </p>
             </div>
           </div>
         </div>
