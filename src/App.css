@@ -4,34 +4,36 @@ body, html, #root {
   min-height: 100%;
   margin: 0;
   padding: 0;
-  font-family: 'Segoe UI', 'Roboto', Arial, sans-serif;
-  background: #f7f8fa;
-  color: #222;
+  font-family: 'EB Garamond', 'Crimson Text', 'Merriweather', serif;
+  background: #f4f1ee;
+  color: #3a2c1a;
 }
 
 a{
-  text-decoration: none;
-  color: inherit;
+  text-decoration: underline;
+  color: #7c5e3c;
 }
 a:hover {
-  color:chocolate;
-  transition: all 0.3s ease;
+  color: #a67c52;
+  transition: color 0.3s;
 }
 .main-landing {
   min-height: 100vh;
   display: flex;
   flex-direction: column;
+  background: #f4f1ee;
 }
 
 .header {
-  background: #fff;
-  box-shadow: 0 2px 8px rgba(0,0,0,0.04);
+  background: #e9e4db;
+  box-shadow: 0 2px 8px rgba(90, 70, 40, 0.06);
   padding: 1.5rem 0;
   position: fixed;
   top: 0;
   left: 0;
   right: 0;
   z-index: 100;
+  border-bottom: 2px solid #c2b59b;
 }
 
 #portfolio-banner {
@@ -68,29 +70,36 @@ a:hover {
   max-width: 1100px;
   margin: 0 auto;
   display: flex;
+  flex-direction: column;
   align-items: center;
-  justify-content: space-between;
+  justify-content: center;
 }
 .logo {
-  font-size: 2rem;
+  font-size: 2.2rem;
+  font-family: 'EB Garamond', 'Crimson Text', serif;
   font-weight: 700;
-  color: #2a3a5e;
+  color: #5a4327;
   margin: 0;
+  letter-spacing: 0.04em;
 }
 .nav a {
   margin-left: 2rem;
-  text-decoration: none;
-  color: #2a3a5e;
+  text-decoration: underline;
+  color: #7c5e3c;
   font-weight: 500;
-  transition: color 0.2s;
+  font-family: 'Crimson Text', serif;
+  font-size: 1.1rem;
 }
 .nav a:hover {
-  color: #0078d7;
+  color: #a67c52;
 }
 .highlight {
   position: relative;
   display: inline-block;
-  color: transparent;
+  color: #a67c52;
+  font-family: 'EB Garamond', serif;
+  font-style: italic;
+  background: none;
 }
 
 .highlight::before,
@@ -126,31 +135,36 @@ a:hover {
   opacity: 1;
 }
 .hero {
-  background: transparent;
+  background: #ede7df;
   padding: 0;
   text-align: center;
-  margin-top: 80px; /* Offset for fixed header */
+  margin-top: 80px;
 }
 .hero h2 {
-  font-size: 2.5rem;
+  font-size: 2.7rem;
   margin-bottom: 1rem;
+  font-family: 'EB Garamond', serif;
+  color: #5a4327;
 }
 .hero p {
-  font-size: 1.25rem;
+  font-size: 1.3rem;
   margin-bottom: 2rem;
+  color: #6b5c43;
+  font-family: 'Crimson Text', serif;
 }
 .cta-btn {
   display: inline-block;
   padding: 0.75rem 2rem;
-  background: #0078d7;
-  color: #fff;
+  background: #bfa980;
+  color: #3a2c1a;
   border-radius: 2rem;
   font-size: 1.1rem;
   font-weight: 600;
   text-decoration: none;
-  box-shadow: 0 2px 8px rgba(0,120,215,0.08);
+  box-shadow: 0 2px 8px rgba(90, 70, 40, 0.08);
   transition: all 0.3s ease;
   border: none;
+  font-family: 'Merriweather', serif;
 }
 
 .cta-btn span {
@@ -158,25 +172,22 @@ a:hover {
 }
 
 .cta-btn:hover {
-  background: #fff;
-  box-shadow: 0 2px 12px rgba(0,0,0,0.1);
+  background: #a67c52;
+  color: #fff;
+  box-shadow: 0 2px 12px rgba(90, 70, 40, 0.13);
 }
 
 .cta-btn:hover span {
-  color: transparent;
-  background: radial-gradient(circle 80px at var(--mouse-x, 50%) var(--mouse-y, 50%), #00d4ff 0%, #0078d7 60%, #0056a3 100%);
-  -webkit-background-clip: text;
-  -webkit-text-fill-color: transparent;
-  background-clip: text;
+  color: #fff;
 }
 
 
 .about, .projects, .contact {
   padding: 3rem 0;
-  background: #fff;
+  background: #f8f5f0;
   margin-bottom: 2rem;
   border-radius: 1rem;
-  box-shadow: 0 2px 8px rgba(0,0,0,0.03);
+  box-shadow: 0 2px 8px rgba(90, 70, 40, 0.03);
 }
 
 .about .container {
@@ -188,7 +199,8 @@ a:hover {
 .about h3, .projects h3, .contact h3 {
   font-size: 2rem;
   margin-bottom: 1rem;
-  color: #2a3a5e;
+  color: #5a4327;
+  font-family: 'EB Garamond', serif;
 }
 .projects .container {
   flex-direction: column;
@@ -233,7 +245,7 @@ a:hover {
 .project-media {
   width: 100%;
   height: 100%;
-  background: #1a1a2e;
+  background: #d6cfc2;
 }
 
 .project-media video,
@@ -285,10 +297,10 @@ a:hover {
 }
 
 .project-details-content {
-  background: linear-gradient(135deg, #f8f9fa, #e9ecef);
+  background: linear-gradient(135deg, #f4f1ee, #e9e4db);
   border-radius: 1rem;
   padding: 2rem;
-  box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+  box-shadow: 0 4px 15px rgba(90, 70, 40, 0.08);
 }
 
 .project-details-content p {
@@ -377,14 +389,15 @@ a:hover {
 }
 
 .footer {
-  background: #2a3a5e;
-  color: #fff;
+  background: #bfa980;
+  color: #3a2c1a;
   text-align: center;
   padding: 1.5rem 0;
   margin-top: auto;
   font-size: 1rem;
   letter-spacing: 0.05em;
   border-radius: 0 0 1rem 1rem;
+  font-family: 'Merriweather', serif;
 }
 
 /* Skills Carousel */
@@ -397,6 +410,10 @@ a:hover {
   justify-content: center;
   margin-top: 2rem;
   width: 100%;
+  background: #f8f5f0;
+  border-radius: 1rem;
+  border: 1.5px solid #c2b59b;
+  box-shadow: 0 2px 8px rgba(90, 70, 40, 0.03);
 }
 
 .skill-card {
@@ -421,15 +438,17 @@ a:hover {
 
 .skill-card.entering {
   opacity: 1;
-  transform: translateX(0);
-  transition: opacity 0.5s ease, transform 0.6s ease-out;
-}
-
-.skill-card.visible {
-  opacity: 1;
-  transform: translateX(0);
-  transition: none;
-}
+  .position: absolute;
+  .background: linear-gradient(135deg, #e9e4db 80%, #bfa980 100%);
+  .color: #3a2c1a;
+  .padding: 1rem 2.5rem;
+  .border-radius: 1rem;
+  .font-size: 1.25rem;
+  .font-weight: 600;
+  .box-shadow: 0 4px 15px rgba(90, 70, 40, 0.13);
+  .white-space: nowrap;
+  .font-family: 'EB Garamond', serif;
+  .border: 1.5px solid #c2b59b;
 
 .skill-card.exiting {
   opacity: 0;
@@ -442,6 +461,10 @@ a:hover {
 .concept-content {
   line-height: 1.8;
   font-size: 1.05rem;
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
 }
 
 .concept-content p {
@@ -479,36 +502,48 @@ a:hover {
   grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
   gap: 1.5rem;
   margin: 1.5rem 0;
+  background: #f8f5f0;
+  border-radius: 1rem;
+  border: 1.5px solid #c2b59b;
+  box-shadow: 0 2px 8px rgba(90, 70, 40, 0.03);
+  padding: 2rem 1rem;
 }
 
 .ip-type {
-  background: linear-gradient(135deg, rgba(0, 120, 215, 0.08), rgba(0, 212, 255, 0.08));
-  border: 1px solid rgba(0, 120, 215, 0.2);
-  border-radius: 12px;
+  background: linear-gradient(135deg, #f4f1ee 80%, #e9e4db 100%);
+  border: 1.5px solid #bfa980;
+  border-radius: 1rem;
   padding: 1.5rem;
   text-align: center;
+  font-family: 'Crimson Text', 'EB Garamond', serif;
+  color: #3a2c1a;
+  box-shadow: 0 2px 8px rgba(90, 70, 40, 0.04);
 }
 
 .ip-type h4 {
-  color: #0078d7;
+  color: #7c5e3c;
   margin-bottom: 0.75rem;
-  font-size: 1.25rem;
+  font-size: 1.3rem;
+  font-family: 'EB Garamond', serif;
 }
 
 .ip-type code {
   display: block;
   margin: 1rem 0;
   padding: 0.75rem;
-  background: rgba(0, 0, 0, 0.05);
+  background: #ede7df;
   border-radius: 6px;
-  font-size: 0.85rem;
+  font-size: 0.95rem;
   word-break: break-all;
+  font-family: 'Merriweather', serif;
+  color: #5a4327;
 }
 
 .ip-note {
-  font-size: 0.85rem;
-  color: #666;
+  font-size: 0.9rem;
+  color: #7c5e3c;
   margin: 0;
+  font-family: 'Crimson Text', serif;
 }
 
 /* Demo Container */

@@ -285,7 +285,7 @@ function Concepts() {
 
             {/* HTTPS Section */}
             <div className="security-topic">
-              <h4>🔒 HTTPS & SSL/TLS</h4>
+              <h4>HTTPS & SSL/TLS</h4>
               <p>
                 HTTPS encrypts all data transmitted between the browser and server using SSL/TLS certificates.
                 This prevents man-in-the-middle attacks and eavesdropping.
@@ -316,7 +316,7 @@ function Concepts() {
 
             {/* XSS Section with Demo */}
             <div className="security-topic">
-              <h4>⚠️ XSS (Cross-Site Scripting)</h4>
+              <h4>XSS (Cross-Site Scripting)</h4>
               <p>
                 XSS attacks occur when malicious scripts are injected into web pages. Attackers can steal 
                 cookies, session tokens, or redirect users to malicious sites.
@@ -366,21 +366,21 @@ function Concepts() {
 
             {/* SQL Injection Section */}
             <div className="security-topic">
-              <h4>💉 SQL Injection</h4>
+              <h4>SQL Injection</h4>
               <p>
                 SQL injection occurs when attackers insert malicious SQL code into queries. This can 
                 expose, modify, or delete database contents.
               </p>
               <div className="code-block vulnerable">
                 <code>
-                  ❌ VULNERABLE CODE:<br/>
+                  VULNERABLE CODE:<br/>
                   const query = "SELECT * FROM users WHERE id = " + userId;<br/>
                   // If userId = "1 OR 1=1" → returns ALL users!
                 </code>
               </div>
               <div className="code-block secure">
                 <code>
-                  ✅ SECURE CODE (Parameterized Query):<br/>
+                  SECURE CODE (Parameterized Query):<br/>
                   const query = "SELECT * FROM users WHERE id = ?";<br/>
                   db.execute(query, [userId]);<br/>
                   // User input is treated as data, not code
@@ -390,7 +390,7 @@ function Concepts() {
 
             {/* CSRF Section */}
             <div className="security-topic">
-              <h4>🛡️ CSRF (Cross-Site Request Forgery)</h4>
+              <h4>CSRF (Cross-Site Request Forgery)</h4>
               <p>
                 CSRF attacks trick users into performing unwanted actions on authenticated sites. 
                 Attackers exploit the browser's automatic cookie submission.
@@ -407,7 +407,7 @@ function Concepts() {
 
             {/* Session Security */}
             <div className="security-topic">
-              <h4>🍪 Secure Cookie Configuration</h4>
+              <h4>Secure Cookie Configuration</h4>
               <div className="code-block">
                 <code>
                   // Secure cookie settings<br/>
@@ -435,7 +435,7 @@ function Concepts() {
 
             <div className="monitoring-tools">
               <div className="tool-card">
-                <h4>📊 Google Analytics</h4>
+                <h4>Google Analytics</h4>
                 <p>Track website traffic, user behavior, and conversion metrics.</p>
                 <ul>
                   <li>Real-time visitor data</li>
@@ -456,7 +456,7 @@ function Concepts() {
               </div>
 
               <div className="tool-card">
-                <h4>🦈 Wireshark</h4>
+                <h4>Wireshark</h4>
                 <p>Deep packet inspection and network protocol analysis.</p>
                 <ul>
                   <li>Capture live network traffic</li>
@@ -475,7 +475,7 @@ function Concepts() {
               </div>
 
               <div className="tool-card">
-                <h4>📈 Prometheus & Grafana</h4>
+                <h4>Prometheus & Grafana</h4>
                 <p>Open-source monitoring and alerting toolkit.</p>
                 <ul>
                   <li>Time-series metrics collection</li>
@@ -486,7 +486,7 @@ function Concepts() {
               </div>
 
               <div className="tool-card">
-                <h4>🌐 Content Security Policy (CSP)</h4>
+                <h4>Content Security Policy (CSP)</h4>
                 <p>Browser security layer that prevents XSS and injection attacks.</p>
                 <div className="code-block">
                   <code>
@@ -501,30 +501,30 @@ function Concepts() {
 
             {/* Security Implementation Status */}
             <div className="implementation-status">
-              <h4>🔐 This Website's Security Features</h4>
+              <h4>This Website's Security Features</h4>
               <div className="status-grid">
                 <div className="status-item implemented">
-                  <span className="status-icon">✅</span>
+                  <span className="status-icon"></span>
                   <span>Content Security Policy (CSP)</span>
                 </div>
                 <div className="status-item implemented">
-                  <span className="status-icon">✅</span>
+                  <span className="status-icon"></span>
                   <span>XSS Protection (DOMPurify)</span>
                 </div>
                 <div className="status-item implemented">
-                  <span className="status-icon">✅</span>
+                  <span className="status-icon"></span>
                   <span>X-Frame-Options (Clickjacking Protection)</span>
                 </div>
                 <div className="status-item implemented">
-                  <span className="status-icon">✅</span>
+                  <span className="status-icon"></span>
                   <span>Referrer Policy</span>
                 </div>
                 <div className="status-item implemented">
-                  <span className="status-icon">✅</span>
+                  <span className="status-icon"></span>
                   <span>Lazy Loading (Performance)</span>
                 </div>
                 <div className="status-item implemented">
-                  <span className="status-icon">✅</span>
+                  <span className="status-icon"></span>
                   <span>Google Analytics Ready</span>
                 </div>
               </div>
