@@ -408,16 +408,10 @@ function Concepts() {
             {/* Session Security */}
             <div className="security-topic">
               <h4>Secure Cookie Configuration</h4>
-              <div className="code-block">
-                <code>
-                  // Secure cookie settings<br/>
-                  Set-Cookie: sessionId=abc123;<br/>
-                  &nbsp;&nbsp;HttpOnly;      // Prevents JavaScript access<br/>
-                  &nbsp;&nbsp;Secure;        // HTTPS only<br/>
-                  &nbsp;&nbsp;SameSite=Strict; // CSRF protection<br/>
-                  &nbsp;&nbsp;Max-Age=3600   // 1 hour expiry
-                </code>
-              </div>
+              <p>
+                Cookies should be configured with security flags such as <code>HttpOnly</code> (prevents JavaScript access), 
+                <code>Secure</code> (HTTPS only), and <code>SameSite=Strict</code> (CSRF protection) to minimize attack surface.
+              </p>
             </div>
           </div>
         </div>
@@ -487,52 +481,11 @@ function Concepts() {
 
               <div className="tool-card">
                 <h4>Content Security Policy (CSP)</h4>
-                <p>Browser security layer that prevents XSS and injection attacks.</p>
-                <div className="code-block">
-                  <code>
-                    &lt;meta http-equiv="Content-Security-Policy"<br/>
-                    &nbsp;&nbsp;content="default-src 'self';<br/>
-                    &nbsp;&nbsp;script-src 'self' https://trusted.com;<br/>
-                    &nbsp;&nbsp;style-src 'self' 'unsafe-inline';"&gt;
-                  </code>
-                </div>
+                <p>Browser security layer that prevents XSS and injection attacks by controlling which resources can be loaded.</p>
               </div>
             </div>
 
-            {/* Security Implementation Status */}
-            <div className="implementation-status">
-              <h4>This Website's Security Features</h4>
-              <div className="status-grid">
-                <div className="status-item implemented">
-                  <span className="status-icon"></span>
-                  <span>Content Security Policy (CSP)</span>
-                </div>
-                <div className="status-item implemented">
-                  <span className="status-icon"></span>
-                  <span>XSS Protection (DOMPurify)</span>
-                </div>
-                <div className="status-item implemented">
-                  <span className="status-icon"></span>
-                  <span>X-Frame-Options (Clickjacking Protection)</span>
-                </div>
-                <div className="status-item implemented">
-                  <span className="status-icon"></span>
-                  <span>Referrer Policy</span>
-                </div>
-                <div className="status-item implemented">
-                  <span className="status-icon"></span>
-                  <span>Lazy Loading (Performance)</span>
-                </div>
-                <div className="status-item implemented">
-                  <span className="status-icon"></span>
-                  <span>Google Analytics Ready</span>
-                </div>
-              </div>
-              <p className="deploy-note">
-                <strong>Note:</strong> HTTPS is automatically enabled when deployed to GitHub Pages, 
-                Netlify, or Vercel. No additional configuration required!
-              </p>
-            </div>
+
           </div>
         </div>
       </section>
